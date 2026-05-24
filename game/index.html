@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nightmare Time</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  
+  <!-- HUD -->
+  <div id="hud">
+    <div id="hud-flashlight">
+      <span id="flashlight-icon">🔦</span>
+      <div id="battery-bar"><div id="battery-fill"></div></div>
+      <span id="flashlight-mode">NORMAL</span>
+    </div>
+    <div id="hud-items">
+      <div class="item-slot" id="slot-1">1: Señuelo</div>
+      <div class="item-slot" id="slot-2">2: Compuerta</div>
+      <div class="item-slot" id="slot-3">3: Calefactor</div>
+      <div class="item-slot" id="slot-4">4: Runa</div>
+    </div>
+    <div id="hud-batteries">Pilas: <span id="battery-count">3</span></div>
+  </div>
+
+  <!-- Tutorial overlay -->
+  <div id="tutorial-overlay">
+    <div id="tutorial-text"></div>
+  </div>
+
+  <!-- Stress vignette -->
+  <div id="stress-vignette"></div>
+
+  <!-- Cutscene overlay -->
+  <div id="cutscene-overlay" class="hidden">
+    <div id="cutscene-text"></div>
+  </div>
+
+  <!-- Main menu -->
+  <div id="main-menu">
+    <h1 id="menu-title">NIGHTMARE TIME</h1>
+    <p id="menu-subtitle">Ellos ya no son quienes eran.</p>
+    <button id="btn-start">JUGAR</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/flashlight.js"></script>
+  <script src="js/hiding.js"></script>
+  <script src="js/tutorial.js"></script>
+  <script src="js/stress.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/puzzles.js"></script>
+  <script src="js/ai_finn.js"></script>
+  <script src="js/ai_jake.js"></script>
+  <script src="js/ai_chicle.js"></script>
+  <script src="js/ai_reyhielo.js"></script>
+  <script src="js/endings.js"></script>
+  <script src="js/cutscenes.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

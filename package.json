@@ -1,0 +1,28 @@
+{
+  "name": "nightmare-time",
+  "version": "1.0.0",
+  "description": "Nightmare Time - Survival Horror 2D basado en Adventure Time corrupto",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "npx @electron/packager . \"Nightmare Time\" --platform=win32 --arch=x64 --out=dist --overwrite --ignore=dist",
+    "dev": "electron ."
+  },
+  "build": {
+    "appId": "com.nightmaretime.game",
+    "productName": "Nightmare Time",
+    "win": {
+      "target": "portable",
+      "icon": "game/assets/icon.ico"
+    },
+    "files": [
+      "electron-main.js",
+      "game/**/*"
+    ]
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.0.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  }
+}
