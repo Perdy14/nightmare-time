@@ -24,10 +24,10 @@ let killer = null;
 
 // ========== ANIMATRÓNICOS ==========
 let bots = [];
-const CAM_NAMES = ['Escenario','Comedor','Backstage','Pasillo Oeste','Pasillo Este','Rincón Oeste','Rincón Este'];
+const CAM_NAMES = ['Escenario','Comedor','Backstage','Pasillo Oeste','Pasillo Este','Rincón Oeste','Rincón Este','Baños','Almacén','Conductos','Sótano','Entrada'];
 const ROUTES = {
-  finn:  [0,1,3,5,'L'], jake: [0,1,4,6,'R'],
-  chicle:[0,2,3,5,'L'], rey:  [0,1,4,6,'R']
+  finn:  [0,1,3,5,7,5,'L'], jake: [0,1,4,6,9,6,'R'],
+  chicle:[0,2,8,3,5,7,5,'L'], rey:  [0,11,1,4,6,10,6,'R']
 };
 const DIFF = [
   null,
@@ -178,9 +178,9 @@ function handleGameClick(){
   if(camOpen&&btn(W/2-80,H-60,160,48)){camOpen=false;return;}
   if(camOpen){
     // Cam buttons
-    for(let i=0;i<7;i++){
-      const bx=840,by=80+i*65;
-      if(btn(bx,by,180,50)){if(camSel!==i)camStatic=0.25;camSel=i;playStatic();return;}
+    for(let i=0;i<12;i++){
+      const bx=840,by=48+i*44;
+      if(btn(bx,by,180,38)){if(camSel!==i)camStatic=0.25;camSel=i;playStatic();return;}
     }
     return;
   }
@@ -471,8 +471,8 @@ function rCameras(){
   rCamMap();
 
   // Botones de cámara
-  for(let i=0;i<7;i++){
-    const bx=840,by=80+i*65,bw=180,bh=50;
+  for(let i=0;i<12;i++){
+    const bx=840,by=48+i*44,bw=180,bh=38;
     const sel=i===camSel, hov=btn(bx,by,bw,bh);
     X.fillStyle=sel?'#0a2a0a':(hov?'#1a1a1a':'#0a0a0a');
     X.fillRect(bx,by,bw,bh);
@@ -480,9 +480,6 @@ function rCameras(){
     X.lineWidth=sel?2:1;X.strokeRect(bx,by,bw,bh);
     X.fillStyle=sel?'#0f0':'#888';X.font='12px Segoe UI';X.textAlign='left';
     X.fillText(`CAM ${i+1} ${CAM_NAMES[i]}`,bx+10,by+30);
-    // Indicador de enemigo
-    const hasEnemy=bots.some(b=>b.active&&!b.atDoor&&typeof b.route[b.pos]==='number'&&b.route[b.pos]===i);
-    if(hasEnemy){X.fillStyle='#f00';X.beginPath();X.arc(bx+bw-15,by+25,5,0,Math.PI*2);X.fill();}
   }
 
   // Botón cerrar
@@ -722,6 +719,110 @@ function rCamRoom(idx){
       X.fillStyle='rgba(0,0,0,0.4)';
       X.beginPath();X.moveTo(o+320,o+470);X.lineTo(o+280,o+h);X.lineTo(o+520,o+h);X.lineTo(o+470,o+470);X.closePath();X.fill();
       if(Math.sin(gameT*3+1)>0.8){X.fillStyle='rgba(255,200,100,0.02)';X.beginPath();X.arc(o+395,o+80,100,0,Math.PI*2);X.fill();}
+    case 7: // Baños
+      X.fillStyle='#080810';X.fillRect(o,o,w,h);
+      // Azulejos
+      X.strokeStyle='rgba(30,30,40,0.4)';X.lineWidth=1;
+      for(var r=0;r<20;r++)for(var b=0;b<14;b++)X.strokeRect(o+b*57,o+r*28,56,27);
+      // Lavabos
+      X.fillStyle='#1a1a25';
+      X.fillRect(o+100,o+300,150,20);X.fillRect(o+350,o+300,150,20);
+      X.fillStyle='#222230';
+      X.beginPath();X.ellipse(o+175,o+295,30,12,0,0,Math.PI*2);X.fill();
+      X.beginPath();X.ellipse(o+425,o+295,30,12,0,0,Math.PI*2);X.fill();
+      // Espejos (rotos)
+      X.fillStyle='#0a0a15';X.fillRect(o+130,o+150,90,120);X.fillRect(o+380,o+150,90,120);
+      X.strokeStyle='#3a3a4a';X.lineWidth=2;X.strokeRect(o+130,o+150,90,120);X.strokeRect(o+380,o+150,90,120);
+      X.strokeStyle='rgba(100,100,120,0.3)';X.beginPath();X.moveTo(o+140,o+160);X.lineTo(o+210,o+260);X.stroke();
+      // Cubículos
+      X.fillStyle='#151520';
+      X.fillRect(o+550,o+100,60,400);X.fillRect(o+650,o+100,60,400);
+      X.fillStyle='#1a1a28';X.fillRect(o+560,o+120,40,350);X.fillRect(o+660,o+120,40,350);
+      // Suelo mojado
+      X.fillStyle='rgba(20,20,40,0.4)';X.fillRect(o,o+450,w,106);
+      X.fillStyle='rgba(40,40,80,0.1)';
+      for(var i=0;i<5;i++)X.fillRect(o+100+i*130,o+460,80,30);
+      break;
+    case 8: // Almacén
+      X.fillStyle='#0a0808';X.fillRect(o,o,w,h);
+      // Cajas apiladas
+      for(var i=0;i<4;i++)for(var j=0;j<3-i;j++){
+        var bx2=o+80+i*180,by2=o+350-j*70;
+        X.fillStyle=j%2===0?'#1a1510':'#151210';
+        X.fillRect(bx2,by2,80,65);X.strokeStyle='#2a2520';X.lineWidth=1;X.strokeRect(bx2,by2,80,65);
+      }
+      // Estantes al fondo
+      X.fillStyle='#1a1515';X.fillRect(o+500,o+80,250,420);
+      X.strokeStyle='#2a2020';X.lineWidth=2;X.strokeRect(o+500,o+80,250,420);
+      for(var i=0;i<5;i++)X.fillRect(o+505,o+80+i*84,240,3);
+      // Bombilla colgante
+      X.strokeStyle='#333';X.lineWidth=1;X.beginPath();X.moveTo(o+350,o);X.lineTo(o+350,o+80);X.stroke();
+      X.fillStyle='rgba(255,200,100,0.6)';X.beginPath();X.arc(o+350,o+85,5,0,Math.PI*2);X.fill();
+      X.fillStyle='rgba(255,200,100,0.02)';X.beginPath();X.arc(o+350,o+85,120,0,Math.PI*2);X.fill();
+      break;
+    case 9: // Conductos
+      X.fillStyle='#080a08';X.fillRect(o,o,w,h);
+      // Tubos metálicos
+      X.fillStyle='#1a1a1a';
+      X.fillRect(o,o+200,w,120);X.fillRect(o,o+380,w,120);
+      X.strokeStyle='#2a2a2a';X.lineWidth=3;
+      X.strokeRect(o,o+200,w,120);X.strokeRect(o,o+380,w,120);
+      // Remaches
+      X.fillStyle='#333';
+      for(var i=0;i<12;i++){X.beginPath();X.arc(o+50+i*65,o+210,3,0,Math.PI*2);X.fill();}
+      for(var i=0;i<12;i++){X.beginPath();X.arc(o+50+i*65,o+390,3,0,Math.PI*2);X.fill();}
+      // Rejillas
+      X.strokeStyle='rgba(40,40,40,0.5)';X.lineWidth=1;
+      for(var i=0;i<30;i++){X.beginPath();X.moveTo(o+i*27,o+200);X.lineTo(o+i*27,o+320);X.stroke();}
+      for(var i=0;i<30;i++){X.beginPath();X.moveTo(o+i*27,o+380);X.lineTo(o+i*27,o+500);X.stroke();}
+      // Oscuridad arriba y abajo
+      X.fillStyle='#040604';X.fillRect(o,o,w,200);X.fillRect(o,o+500,w,56);
+      break;
+    case 10: // Sótano
+      X.fillStyle='#050305';X.fillRect(o,o,w,h);
+      // Escaleras
+      X.fillStyle='#0a0808';
+      for(var i=0;i<8;i++)X.fillRect(o+50,o+50+i*40,200,35);
+      X.strokeStyle='#1a1515';X.lineWidth=1;
+      for(var i=0;i<8;i++)X.strokeRect(o+50,o+50+i*40,200,35);
+      // Calderas/tuberías
+      X.fillStyle='#1a1515';X.beginPath();X.arc(o+500,o+350,60,0,Math.PI*2);X.fill();
+      X.strokeStyle='#2a2020';X.lineWidth=3;X.beginPath();X.arc(o+500,o+350,60,0,Math.PI*2);X.stroke();
+      X.fillStyle='#222';X.fillRect(o+480,o+250,40,40);
+      // Tuberías
+      X.strokeStyle='#2a2020';X.lineWidth=6;
+      X.beginPath();X.moveTo(o+500,o+290);X.lineTo(o+500,o+100);X.lineTo(o+700,o+100);X.stroke();
+      X.beginPath();X.moveTo(o+560,o+350);X.lineTo(o+750,o+350);X.lineTo(o+750,o+500);X.stroke();
+      // Suelo húmedo
+      X.fillStyle='rgba(10,15,10,0.5)';X.fillRect(o,o+450,w,106);
+      X.fillStyle='rgba(20,40,20,0.1)';
+      for(var i=0;i<4;i++)X.fillRect(o+150+i*150,o+460,60,20);
+      break;
+    case 11: // Entrada
+      X.fillStyle='#060410';X.fillRect(o,o,w,h);
+      // Puerta principal grande
+      X.fillStyle='#1a1020';X.fillRect(o+280,o+80,220,420);
+      X.strokeStyle='#3a2545';X.lineWidth=5;X.strokeRect(o+280,o+80,220,420);
+      // Ventanilla en puerta
+      X.fillStyle='#030015';X.fillRect(o+340,o+120,100,60);
+      X.strokeStyle='#2a2a3a';X.lineWidth=2;X.strokeRect(o+340,o+120,100,60);
+      // Cartel "NIGHTMARE TIME"
+      X.fillStyle='#1a1020';X.fillRect(o+310,o+30,160,35);
+      X.fillStyle='#a855f7';X.font='bold 14px Segoe UI';X.textAlign='center';
+      X.fillText('NIGHTMARE TIME',o+390,o+53);
+      // Paredes laterales
+      X.fillStyle='#0a0815';X.fillRect(o,o,280,h);X.fillRect(o+500,o,286,h);
+      // Plantas muertas
+      X.fillStyle='#1a2a1a';X.fillRect(o+100,o+350,30,150);
+      X.fillStyle='#0a1a0a';X.beginPath();X.arc(o+115,o+340,20,0,Math.PI*2);X.fill();
+      X.fillStyle='#1a2a1a';X.fillRect(o+620,o+370,30,130);
+      X.fillStyle='#0a1a0a';X.beginPath();X.arc(o+635,o+360,18,0,Math.PI*2);X.fill();
+      // Suelo
+      X.fillStyle='#080510';X.fillRect(o,o+480,w,76);
+      // Baldosas
+      X.strokeStyle='rgba(20,10,30,0.4)';X.lineWidth=1;
+      for(var i=0;i<12;i++)X.strokeRect(o+i*66,o+480,65,76);
+      break;
       break;
   }
   X.restore();
