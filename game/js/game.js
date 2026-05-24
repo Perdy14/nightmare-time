@@ -119,7 +119,7 @@ function update(dt){
 
   // Mirar (solo fuera de cámaras)
   if(!camOpen){
-    const target=(mx/W-0.5)*800;
+    const target=-(mx/W-0.5)*800;
     lookX+=(target-lookX)*dt*4;
     lookX=Math.max(-350,Math.min(350,lookX));
   }
@@ -657,145 +657,7 @@ function rCursor(){
   X.beginPath();X.arc(mx,my,4,0,Math.PI*2);X.fill();
 }
 
-// ========== DIBUJAR ANIMATRÓNICOS ==========
-function drawBot(c,id,x,y,s,alpha){
-  c.save();c.translate(x,y);c.scale(s,s);c.globalAlpha=alpha||1;
-  switch(id){
-    case'finn':dFinn(c);break;case'jake':dJake(c);break;
-    case'chicle':dChicle(c);break;case'rey':dRey(c);break;
-  }
-  c.restore();
-}
-
-function dFinn(c){
-  // Sombra
-  c.fillStyle='rgba(0,0,0,0.3)';c.beginPath();c.ellipse(0,85,18,5,0,0,Math.PI*2);c.fill();
-  // Piernas
-  c.fillStyle='#ddd';c.fillRect(-10,58,8,22);c.fillRect(2,58,8,22);
-  // Zapatos
-  c.fillStyle='#1a1a1a';
-  c.beginPath();c.ellipse(-6,80,7,4,0,0,Math.PI*2);c.fill();
-  c.beginPath();c.ellipse(6,80,7,4,0,0,Math.PI*2);c.fill();
-  // Shorts
-  c.fillStyle='#1a5a3a';c.fillRect(-14,45,28,16);
-  // Cuerpo
-  c.fillStyle='#1a5a8a';c.fillRect(-15,5,30,42);
-  // Mochila
-  c.fillStyle='#2a8a2a';c.beginPath();c.ellipse(0,25,10,14,0,0,Math.PI*2);c.fill();
-  // Brazos
-  c.fillStyle='#ddd';c.fillRect(-22,10,9,28);c.fillRect(13,10,9,28);
-  // Gorro
-  c.fillStyle='#f5f5f5';
-  c.beginPath();c.arc(0,-14,20,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(-14,-30,8,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(14,-30,8,0,Math.PI*2);c.fill();
-  // Cara
-  c.fillStyle='#ffe0b0';c.beginPath();c.arc(0,-8,13,0,Math.PI*2);c.fill();
-  // Ojos rojos brillantes
-  c.fillStyle='#ff0000';c.shadowColor='#ff0000';c.shadowBlur=12;
-  c.beginPath();c.arc(-5,-11,4,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(5,-11,4,0,Math.PI*2);c.fill();
-  c.shadowBlur=0;
-  c.fillStyle='#300';c.beginPath();c.arc(-5,-11,2,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(5,-11,2,0,Math.PI*2);c.fill();
-  // Boca
-  c.strokeStyle='#500';c.lineWidth=1.5;
-  c.beginPath();c.arc(0,-2,6,0.2,Math.PI-0.2);c.stroke();
-  // Espada
-  c.fillStyle='#6a0dad';c.fillRect(20,-10,4,50);
-  c.fillStyle='#b060ff';c.fillRect(17,-13,10,5);
-  // Corrupción
-  c.strokeStyle='rgba(120,0,180,0.4)';c.lineWidth=1;
-  c.beginPath();c.moveTo(-8,8);c.lineTo(-14,40);c.moveTo(8,8);c.lineTo(14,42);c.stroke();
-}
-
-function dJake(c){
-  c.fillStyle='rgba(0,0,0,0.3)';c.beginPath();c.ellipse(0,65,22,5,0,0,Math.PI*2);c.fill();
-  // Patas
-  c.fillStyle='#cc9900';
-  c.fillRect(-18,40,9,25);c.fillRect(-5,40,9,22);c.fillRect(5,40,9,24);c.fillRect(15,40,9,20);
-  // Cuerpo
-  c.fillStyle='#ddaa00';c.beginPath();c.ellipse(0,20,24,18,0,0,Math.PI*2);c.fill();
-  // Cabeza
-  c.fillStyle='#eebb00';c.beginPath();c.arc(0,-12,18,0,Math.PI*2);c.fill();
-  // Hocico
-  c.fillStyle='#ffdd44';c.beginPath();c.ellipse(0,-5,10,7,0,0,Math.PI*2);c.fill();
-  // Orejas
-  c.fillStyle='#cc9900';
-  c.beginPath();c.ellipse(-13,-26,5,11,-0.3,0,Math.PI*2);c.fill();
-  c.beginPath();c.ellipse(13,-26,5,11,0.3,0,Math.PI*2);c.fill();
-  // Ojos
-  c.fillStyle='#000';c.beginPath();c.arc(-7,-16,6,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(7,-16,6,0,Math.PI*2);c.fill();
-  c.fillStyle='#ffff00';c.shadowColor='#ffff00';c.shadowBlur=8;
-  c.beginPath();c.arc(-7,-16,3,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(7,-16,3,0,Math.PI*2);c.fill();c.shadowBlur=0;
-  // Sonrisa enorme
-  c.strokeStyle='#330000';c.lineWidth=2;
-  c.beginPath();c.arc(0,-3,11,0.1,Math.PI-0.1);c.stroke();
-  c.fillStyle='#fff';for(let i=-4;i<=4;i++)c.fillRect(-9+(i+4)*2.2,-3,2,4);
-  // Cola
-  c.strokeStyle='#cc9900';c.lineWidth=4;
-  c.beginPath();c.moveTo(-24,20);c.quadraticCurveTo(-35,5,-30,-10);c.stroke();
-}
-
-function dChicle(c){
-  c.fillStyle='rgba(0,0,0,0.3)';c.beginPath();c.ellipse(0,80,16,4,0,0,Math.PI*2);c.fill();
-  // Cuerpo derretido
-  c.fillStyle='#cc3388';
-  c.beginPath();c.moveTo(-18,75);c.quadraticCurveTo(-20,15,0,-22);c.quadraticCurveTo(20,15,18,75);c.closePath();c.fill();
-  // Goteo
-  c.fillStyle='#aa2266';
-  for(let i=-2;i<=2;i++){c.beginPath();c.ellipse(i*7,78+Math.abs(i)*4,3,8+Math.abs(i)*3,0,0,Math.PI*2);c.fill();}
-  // Corona
-  c.fillStyle='#ffd700';
-  c.beginPath();c.moveTo(-11,-26);c.lineTo(-9,-40);c.lineTo(-4,-30);c.lineTo(0,-44);
-  c.lineTo(4,-30);c.lineTo(9,-40);c.lineTo(11,-26);c.closePath();c.fill();
-  c.fillStyle='#ff00aa';c.beginPath();c.arc(0,-32,3,0,Math.PI*2);c.fill();
-  // Cara
-  c.fillStyle='#ffccdd';c.beginPath();c.arc(0,-6,13,0,Math.PI*2);c.fill();
-  // Ojos
-  c.fillStyle='#000';c.beginPath();c.arc(-5,-9,4.5,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(5,-7,3.5,0,Math.PI*2);c.fill();
-  c.fillStyle='#ff00ff';c.shadowColor='#ff00ff';c.shadowBlur=6;
-  c.beginPath();c.arc(-5,-9,2,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(5,-7,1.5,0,Math.PI*2);c.fill();c.shadowBlur=0;
-  // Boca
-  c.strokeStyle='#660033';c.lineWidth=1.5;
-  c.beginPath();c.moveTo(-7,2);c.quadraticCurveTo(0,9,7,1);c.stroke();
-}
-
-function dRey(c){
-  c.fillStyle='rgba(0,0,0,0.3)';c.beginPath();c.ellipse(0,85,18,5,0,0,Math.PI*2);c.fill();
-  // Túnica
-  c.fillStyle='#1a3a6b';
-  c.beginPath();c.moveTo(-18,15);c.lineTo(-24,85);c.lineTo(24,85);c.lineTo(18,15);c.closePath();c.fill();
-  // Cuerpo
-  c.fillStyle='#4488cc';c.beginPath();c.ellipse(0,8,16,20,0,0,Math.PI*2);c.fill();
-  // Cabeza
-  c.fillStyle='#6699cc';c.beginPath();c.arc(0,-18,16,0,Math.PI*2);c.fill();
-  // Corona
-  c.fillStyle='#ffd700';
-  c.beginPath();c.moveTo(-11,-32);c.lineTo(-9,-46);c.lineTo(-4,-36);c.lineTo(0,-50);
-  c.lineTo(4,-36);c.lineTo(9,-46);c.lineTo(11,-32);c.closePath();c.fill();
-  c.fillStyle='#f00';c.beginPath();c.arc(0,-40,3,0,Math.PI*2);c.fill();
-  // Nariz
-  c.fillStyle='#5588bb';c.beginPath();c.moveTo(0,-16);c.lineTo(-4,0);c.lineTo(4,0);c.closePath();c.fill();
-  // Ojos
-  c.fillStyle='#fff';c.beginPath();c.arc(-6,-20,4.5,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(6,-20,4.5,0,Math.PI*2);c.fill();
-  c.fillStyle='#00ccff';c.shadowColor='#00ccff';c.shadowBlur=6;
-  c.beginPath();c.arc(-6,-20,2,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(6,-20,2,0,Math.PI*2);c.fill();c.shadowBlur=0;
-  // Barba
-  c.fillStyle='#ddeeff';
-  c.beginPath();c.moveTo(-10,-8);c.quadraticCurveTo(-7,12,-4,28);c.lineTo(4,28);c.quadraticCurveTo(7,12,10,-8);c.closePath();c.fill();
-  // Manos + hielo
-  c.fillStyle='#4488cc';c.beginPath();c.arc(-20,28,7,0,Math.PI*2);c.fill();
-  c.beginPath();c.arc(20,28,7,0,Math.PI*2);c.fill();
-  c.fillStyle='rgba(100,200,255,0.5)';c.beginPath();c.arc(20,22,11,0,Math.PI*2);c.fill();
-  c.strokeStyle='rgba(150,230,255,0.6)';c.lineWidth=1;c.beginPath();c.arc(20,22,11,0,Math.PI*2);c.stroke();
-}
+// Personajes cargados desde characters.js
 
 // ========== LOOP ==========
 let lt=performance.now();
