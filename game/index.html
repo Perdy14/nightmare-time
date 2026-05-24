@@ -2,65 +2,85 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Nightmare Time</title>
+  <title>Nightmare Time - Five Nights at the Tree House</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-  
-  <!-- HUD -->
-  <div id="hud">
-    <div id="hud-flashlight">
-      <span id="flashlight-icon">🔦</span>
-      <div id="battery-bar"><div id="battery-fill"></div></div>
-      <span id="flashlight-mode">NORMAL</span>
+  <div id="game-container">
+    <!-- Menú principal -->
+    <div id="main-menu">
+      <h1 id="menu-title">NIGHTMARE TIME</h1>
+      <p id="menu-subtitle">Five Nights at the Tree House</p>
+      <button id="btn-start" onclick="Game.startNight()">NUEVA PARTIDA</button>
+      <button id="btn-night-select" onclick="Game.showNightSelect()">SELECCIONAR NOCHE</button>
     </div>
-    <div id="hud-items">
-      <div class="item-slot" id="slot-1">1: Señuelo</div>
-      <div class="item-slot" id="slot-2">2: Compuerta</div>
-      <div class="item-slot" id="slot-3">3: Calefactor</div>
-      <div class="item-slot" id="slot-4">4: Runa</div>
+
+    <!-- Selección de noche -->
+    <div id="night-select" class="hidden">
+      <h2>Seleccionar Noche</h2>
+      <div id="night-buttons"></div>
+      <button onclick="Game.showMenu()">Volver</button>
     </div>
-    <div id="hud-batteries">Pilas: <span id="battery-count">3</span></div>
+
+    <!-- Juego -->
+    <div id="game-screen" class="hidden">
+      <canvas id="gameCanvas" width="1280" height="720"></canvas>
+      
+      <!-- HUD superior -->
+      <div id="hud-top">
+        <span id="hud-night">Noche 1</span>
+        <span id="hud-time">12 AM</span>
+        <span id="hud-power">Energía: 100%</span>
+      </div>
+
+      <!-- Botones de cámara -->
+      <div id="camera-panel" class="hidden">
+        <div id="camera-feed"></div>
+        <div id="camera-buttons">
+          <button class="cam-btn" data-cam="cam1">CAM 1 - Entrada</button>
+          <button class="cam-btn" data-cam="cam2">CAM 2 - Sala</button>
+          <button class="cam-btn" data-cam="cam3">CAM 3 - Cocina</button>
+          <button class="cam-btn" data-cam="cam4">CAM 4 - Pasillo Izq</button>
+          <button class="cam-btn" data-cam="cam5">CAM 5 - Pasillo Der</button>
+          <button class="cam-btn" data-cam="cam6">CAM 6 - Hab. Finn</button>
+          <button class="cam-btn" data-cam="cam7">CAM 7 - Conductos</button>
+        </div>
+        <div id="camera-name">CAM 1 - Entrada</div>
+      </div>
+
+      <!-- Botón cámara -->
+      <button id="btn-camera" onclick="Game.toggleCamera()">📹 CÁMARAS</button>
+
+      <!-- Puertas -->
+      <button id="btn-door-left" onclick="Game.toggleDoor('left')">PUERTA IZQ</button>
+      <button id="btn-door-right" onclick="Game.toggleDoor('right')">PUERTA DER</button>
+
+      <!-- Luces -->
+      <button id="btn-light-left" onmousedown="Game.lightOn('left')" onmouseup="Game.lightOff('left')">💡 IZQ</button>
+      <button id="btn-light-right" onmousedown="Game.lightOn('right')" onmouseup="Game.lightOff('right')">💡 DER</button>
+    </div>
+
+    <!-- Jumpscare overlay -->
+    <div id="jumpscare-overlay" class="hidden">
+      <canvas id="jumpscareCanvas" width="1280" height="720"></canvas>
+    </div>
+
+    <!-- Game Over -->
+    <div id="gameover-screen" class="hidden">
+      <h1>GAME OVER</h1>
+      <p id="gameover-text"></p>
+      <button onclick="Game.retry()">Reintentar</button>
+      <button onclick="Game.showMenu()">Menú</button>
+    </div>
+
+    <!-- Victoria -->
+    <div id="win-screen" class="hidden">
+      <h1 id="win-title">6 AM</h1>
+      <p id="win-text">Has sobrevivido la noche.</p>
+      <button onclick="Game.nextNight()">Siguiente Noche</button>
+    </div>
   </div>
 
-  <!-- Tutorial overlay -->
-  <div id="tutorial-overlay">
-    <div id="tutorial-text"></div>
-  </div>
-
-  <!-- Stress vignette -->
-  <div id="stress-vignette"></div>
-
-  <!-- Cutscene overlay -->
-  <div id="cutscene-overlay" class="hidden">
-    <div id="cutscene-text"></div>
-  </div>
-
-  <!-- Main menu -->
-  <div id="main-menu">
-    <h1 id="menu-title">NIGHTMARE TIME</h1>
-    <p id="menu-subtitle">Ellos ya no son quienes eran.</p>
-    <button id="btn-start">JUGAR</button>
-  </div>
-
-  <!-- Scripts -->
-  <script src="js/utils.js"></script>
-  <script src="js/audio.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/player.js"></script>
-  <script src="js/flashlight.js"></script>
-  <script src="js/hiding.js"></script>
-  <script src="js/tutorial.js"></script>
-  <script src="js/stress.js"></script>
-  <script src="js/events.js"></script>
-  <script src="js/puzzles.js"></script>
-  <script src="js/ai_finn.js"></script>
-  <script src="js/ai_jake.js"></script>
-  <script src="js/ai_chicle.js"></script>
-  <script src="js/ai_reyhielo.js"></script>
-  <script src="js/endings.js"></script>
-  <script src="js/cutscenes.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>
