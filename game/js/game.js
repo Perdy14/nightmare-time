@@ -31,12 +31,12 @@ const ROUTES = {
 };
 const DIFF = [
   null,
-  {finn:3,jake:0,chicle:0,rey:0},
-  {finn:5,jake:3,chicle:0,rey:0},
-  {finn:7,jake:5,chicle:3,rey:2},
-  {finn:10,jake:7,chicle:5,rey:4},
-  {finn:14,jake:11,chicle:9,rey:7},
-  {finn:18,jake:15,chicle:12,rey:11}
+  {finn:3,jake:2,chicle:1,rey:1},
+  {finn:5,jake:4,chicle:3,rey:2},
+  {finn:7,jake:6,chicle:5,rey:4},
+  {finn:10,jake:8,chicle:7,rey:6},
+  {finn:14,jake:12,chicle:10,rey:9},
+  {finn:18,jake:16,chicle:14,rey:12}
 ];
 
 function mkBot(id,name,ag,route){
@@ -524,70 +524,204 @@ function rCamMap(){
 
 function rCamRoom(idx){
   X.save();X.beginPath();X.rect(22,22,786,556);X.clip();
-  const o=22;
+  const o=22,w=786,h=556;
+  // Fondo base oscuro
+  X.fillStyle='#050308';X.fillRect(o,o,w,h);
   switch(idx){
-    case 0: // Escenario
-      X.fillStyle='#0f0815';X.fillRect(o,o,786,556);
-      // Escenario elevado
-      X.fillStyle='#1a0a25';X.fillRect(o+150,o+200,486,250);
-      // Cortinas
-      X.fillStyle='#4a0a2a';X.fillRect(o+150,o+80,50,370);X.fillRect(o+586,o+80,50,370);
+    case 0: // Escenario principal
+      // Pared trasera con textura de ladrillo
+      var wg=X.createLinearGradient(o,o,o,o+h);
+      wg.addColorStop(0,'#1a0a20');wg.addColorStop(1,'#0a0510');
+      X.fillStyle=wg;X.fillRect(o,o,w,h);
+      // Ladrillos
+      X.strokeStyle='rgba(40,15,50,0.3)';X.lineWidth=1;
+      for(var r=0;r<18;r++)for(var b=0;b<12;b++){
+        var bx=o+b*68+(r%2)*34,by=o+r*32;
+        X.strokeRect(bx,by,66,30);
+      }
+      // Escenario elevado con madera
+      var sg=X.createLinearGradient(o,o+220,o,o+480);
+      sg.addColorStop(0,'#2a1535');sg.addColorStop(1,'#150a1a');
+      X.fillStyle=sg;X.fillRect(o+100,o+220,586,280);
+      // Tablas del escenario
+      X.strokeStyle='rgba(60,30,80,0.3)';X.lineWidth=1;
+      for(var i=0;i<10;i++)X.strokeRect(o+100+i*59,o+220,58,280);
+      // Cortinas con pliegues
+      var cg=X.createLinearGradient(o+100,o,o+160,o);
+      cg.addColorStop(0,'#5a0a30');cg.addColorStop(0.5,'#8a1050');cg.addColorStop(1,'#5a0a30');
+      X.fillStyle=cg;X.fillRect(o+100,o+50,65,450);
+      cg=X.createLinearGradient(o+621,o,o+686,o);
+      cg.addColorStop(0,'#5a0a30');cg.addColorStop(0.5,'#8a1050');cg.addColorStop(1,'#5a0a30');
+      X.fillStyle=cg;X.fillRect(o+621,o+50,65,450);
       // Cortina superior
-      X.fillStyle='#3a0820';X.fillRect(o+150,o+80,486,40);
-      // Estrellas decorativas
-      X.fillStyle='#ff0';X.font='24px serif';X.textAlign='center';
-      X.fillText('★',o+300,o+150);X.fillText('★',o+500,o+150);
-      // Suelo
-      X.fillStyle='#080510';X.fillRect(o,o+450,786,106);
+      X.fillStyle='#4a0828';X.fillRect(o+100,o+50,586,35);
+      // Borlas doradas
+      X.fillStyle='#aa8800';
+      for(var i=0;i<8;i++){X.beginPath();X.arc(o+140+i*70,o+88,4,0,Math.PI*2);X.fill();}
+      // Focos de luz
+      X.fillStyle='rgba(255,200,100,0.04)';
+      X.beginPath();X.moveTo(o+300,o+50);X.lineTo(o+250,o+500);X.lineTo(o+350,o+500);X.closePath();X.fill();
+      X.beginPath();X.moveTo(o+500,o+50);X.lineTo(o+450,o+500);X.lineTo(o+550,o+500);X.closePath();X.fill();
+      // Suelo con reflejo
+      X.fillStyle='#080510';X.fillRect(o,o+480,w,76);
+      X.fillStyle='rgba(30,10,40,0.5)';
+      for(var i=0;i<12;i++)X.fillRect(o+i*66,o+480,64,76);
       break;
     case 1: // Comedor
-      X.fillStyle='#0a0810';X.fillRect(o,o,786,556);
-      X.fillStyle='#0f0a18';X.fillRect(o,o+400,786,156);
-      // Mesas
-      X.fillStyle='#1a1020';
-      X.fillRect(o+100,o+280,120,60);X.fillRect(o+350,o+300,120,60);X.fillRect(o+580,o+270,120,60);
+      var wg=X.createLinearGradient(o,o,o,o+h);
+      wg.addColorStop(0,'#120a18');wg.addColorStop(1,'#080510');
+      X.fillStyle=wg;X.fillRect(o,o,w,h);
+      // Suelo de baldosas
+      X.fillStyle='#0a0812';X.fillRect(o,o+380,w,176);
+      X.strokeStyle='rgba(30,15,40,0.4)';X.lineWidth=1;
+      for(var i=0;i<12;i++)for(var j=0;j<4;j++)X.strokeRect(o+i*66,o+380+j*44,65,43);
+      // Mesas con mantel y sombra
+      for(var t=0;t<3;t++){
+        var tx=o+80+t*240,ty=o+280;
+        X.fillStyle='rgba(0,0,0,0.3)';X.fillRect(tx+5,ty+65,130,10);
+        X.fillStyle='#1a1025';X.fillRect(tx,ty,130,60);
+        X.fillStyle='#2a1535';X.fillRect(tx+5,ty+2,120,5);
+        // Platos
+        X.strokeStyle='#333';X.lineWidth=1;
+        X.beginPath();X.ellipse(tx+40,ty+30,12,6,0,0,Math.PI*2);X.stroke();
+        X.beginPath();X.ellipse(tx+90,ty+30,12,6,0,0,Math.PI*2);X.stroke();
+      }
       // Sillas
-      X.fillStyle='#120a18';
-      for(let i=0;i<8;i++)X.fillRect(o+80+i*90,o+350,25,50);
-      // Dibujos en pared
-      X.strokeStyle='#2a1a3a';X.lineWidth=1;
-      X.strokeRect(o+200,o+80,60,80);X.strokeRect(o+500,o+100,50,60);
+      for(var i=0;i<10;i++){
+        var sx=o+60+i*75,sy=o+350;
+        X.fillStyle='#150a1a';X.fillRect(sx,sy,20,50);
+        X.fillRect(sx+2,sy-30,16,32);
+      }
+      // Cuadros en pared con marcos
+      X.fillStyle='#1a1030';X.fillRect(o+150,o+60,90,70);
+      X.strokeStyle='#3a2a4a';X.lineWidth=3;X.strokeRect(o+150,o+60,90,70);
+      X.fillStyle='#1a1030';X.fillRect(o+500,o+80,70,55);
+      X.strokeStyle='#3a2a4a';X.lineWidth=3;X.strokeRect(o+500,o+80,70,55);
+      // Lámpara colgante
+      X.strokeStyle='#333';X.lineWidth=2;X.beginPath();X.moveTo(o+400,o);X.lineTo(o+400,o+60);X.stroke();
+      X.fillStyle='#2a2a1a';X.beginPath();X.arc(o+400,o+65,15,0,Math.PI);X.fill();
+      X.fillStyle='rgba(255,200,100,0.03)';X.beginPath();X.arc(o+400,o+65,80,0,Math.PI*2);X.fill();
       break;
-    case 2: // Backstage/Cocina
-      X.fillStyle='#100810';X.fillRect(o,o,786,556);
-      // Estantes
-      X.fillStyle='#1a1020';X.fillRect(o+50,o+100,100,400);X.fillRect(o+600,o+80,150,420);
-      // Mesa central
-      X.fillStyle='#151015';X.fillRect(o+250,o+250,250,30);
-      // Cabezas de repuesto (creepy)
-      X.fillStyle='#333';
-      X.beginPath();X.arc(o+80,o+150,15,0,Math.PI*2);X.fill();
-      X.beginPath();X.arc(o+120,o+200,12,0,Math.PI*2);X.fill();
-      X.fillStyle='#f00';X.beginPath();X.arc(o+78,o+148,3,0,Math.PI*2);X.fill();
-      X.beginPath();X.arc(o+122,o+198,2,0,Math.PI*2);X.fill();
+    case 2: // Backstage (almacén siniestro)
+      X.fillStyle='#0a0810';X.fillRect(o,o,w,h);
+      // Estantes metálicos
+      for(var s=0;s<3;s++){
+        var sx=o+50+s*260,sy=o+60;
+        X.fillStyle='#1a1a20';X.fillRect(sx,sy,100,440);
+        X.strokeStyle='#2a2a30';X.lineWidth=2;X.strokeRect(sx,sy,100,440);
+        for(var sh=0;sh<5;sh++){
+          X.fillStyle='#222228';X.fillRect(sx+5,sy+sh*88,90,3);
+          // Objetos en estantes
+          X.fillStyle='#1a1520';X.fillRect(sx+10,sy+sh*88-25,25,25);
+          X.fillStyle='#151218';X.beginPath();X.arc(sx+70,sy+sh*88-15,12,0,Math.PI*2);X.fill();
+        }
+      }
+      // Cabezas de animatrónicos (repuesto) - CREEPY
+      X.fillStyle='#2a2a30';X.beginPath();X.arc(o+80,o+130,18,0,Math.PI*2);X.fill();
+      X.fillStyle='#f00';X.beginPath();X.arc(o+75,o+125,3,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(o+85,o+125,3,0,Math.PI*2);X.fill();
+      X.fillStyle='#2a2a30';X.beginPath();X.arc(o+130,o+220,15,0,Math.PI*2);X.fill();
+      X.fillStyle='#ff0';X.beginPath();X.arc(o+126,o+216,2,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(o+134,o+216,2,0,Math.PI*2);X.fill();
+      // Mesa de trabajo
+      X.fillStyle='#1a1520';X.fillRect(o+400,o+300,250,20);
+      X.fillStyle='#151218';X.fillRect(o+420,o+320,20,180);X.fillRect(o+620,o+320,20,180);
+      // Herramientas
+      X.strokeStyle='#444';X.lineWidth=2;
+      X.beginPath();X.moveTo(o+450,o+280);X.lineTo(o+450,o+300);X.stroke();
+      X.beginPath();X.moveTo(o+480,o+270);X.lineTo(o+480,o+300);X.stroke();
+      // Suelo sucio
+      X.fillStyle='rgba(20,10,15,0.5)';X.fillRect(o,o+480,w,76);
       break;
-    case 3: case 4: // Pasillos
-      X.fillStyle='#060410';X.fillRect(o,o,786,556);
-      // Perspectiva de pasillo
-      X.fillStyle='#0a0818';
-      X.beginPath();X.moveTo(o+200,o);X.lineTo(o+586,o);X.lineTo(o+500,o+556);X.lineTo(o+286,o+556);X.closePath();X.fill();
-      // Cuadros
-      X.strokeStyle='#2a1a3a';X.lineWidth=2;
-      X.strokeRect(o+300,o+100,80,100);X.strokeRect(o+450,o+120,60,80);
-      // Luz tenue al fondo
-      X.fillStyle='rgba(100,50,150,0.03)';X.fillRect(o+350,o+200,100,200);
+    case 3: // Pasillo Oeste
+      X.fillStyle='#060410';X.fillRect(o,o,w,h);
+      // Perspectiva de pasillo realista
+      var pg=X.createLinearGradient(o+200,o,o+586,o);
+      pg.addColorStop(0,'#0a0818');pg.addColorStop(0.5,'#0f0c20');pg.addColorStop(1,'#0a0818');
+      X.fillStyle=pg;
+      X.beginPath();X.moveTo(o+180,o);X.lineTo(o+606,o);X.lineTo(o+520,o+h);X.lineTo(o+266,o+h);X.closePath();X.fill();
+      // Suelo con perspectiva
+      X.fillStyle='#080612';
+      X.beginPath();X.moveTo(o+266,o+350);X.lineTo(o+520,o+350);X.lineTo(o+520,o+h);X.lineTo(o+266,o+h);X.closePath();X.fill();
+      // Baldosas perspectiva
+      X.strokeStyle='rgba(30,15,40,0.3)';X.lineWidth=1;
+      for(var i=0;i<6;i++){var ly=o+350+i*35;X.beginPath();X.moveTo(o+266,ly);X.lineTo(o+520,ly);X.stroke();}
+      // Cuadros con marcos dorados
+      X.fillStyle='#1a1030';X.fillRect(o+300,o+80,90,110);
+      X.strokeStyle='#8a7a30';X.lineWidth=3;X.strokeRect(o+300,o+80,90,110);
+      X.fillStyle='#1a1030';X.fillRect(o+440,o+100,70,90);
+      X.strokeStyle='#8a7a30';X.lineWidth=3;X.strokeRect(o+440,o+100,70,90);
+      // Dibujos perturbadores dentro
+      X.fillStyle='#f00';X.beginPath();X.arc(o+345,o+130,5,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(o+475,o+140,4,0,Math.PI*2);X.fill();
+      // Luz al fondo
+      X.fillStyle='rgba(100,50,150,0.04)';X.beginPath();X.arc(o+393,o+200,60,0,Math.PI*2);X.fill();
+      // Tubería en el techo
+      X.fillStyle='#1a1a20';X.fillRect(o+280,o+10,226,8);
       break;
-    case 5: case 6: // Esquinas (cerca de oficina)
-      X.fillStyle='#040308';X.fillRect(o,o,786,556);
-      X.fillStyle='#0a0610';X.fillRect(o+200,o+50,386,456);
-      // Puerta al fondo
-      X.fillStyle='#1a0a1a';X.fillRect(o+320,o+150,150,300);
-      X.strokeStyle='#3a1a4a';X.lineWidth=3;X.strokeRect(o+320,o+150,150,300);
-      // Cartel
-      X.fillStyle='#666';X.font='10px Segoe UI';X.textAlign='center';
-      X.fillText(idx===5?'← OFICINA':'OFICINA →',o+395,o+470);
+    case 4: // Pasillo Este
+      X.fillStyle='#060410';X.fillRect(o,o,w,h);
+      var pg=X.createLinearGradient(o+200,o,o+586,o);
+      pg.addColorStop(0,'#0a0818');pg.addColorStop(0.5,'#0f0c20');pg.addColorStop(1,'#0a0818');
+      X.fillStyle=pg;
+      X.beginPath();X.moveTo(o+180,o);X.lineTo(o+606,o);X.lineTo(o+520,o+h);X.lineTo(o+266,o+h);X.closePath();X.fill();
+      X.fillStyle='#080612';
+      X.beginPath();X.moveTo(o+266,o+350);X.lineTo(o+520,o+350);X.lineTo(o+520,o+h);X.lineTo(o+266,o+h);X.closePath();X.fill();
+      X.strokeStyle='rgba(30,15,40,0.3)';X.lineWidth=1;
+      for(var i=0;i<6;i++){var ly=o+350+i*35;X.beginPath();X.moveTo(o+266,ly);X.lineTo(o+520,ly);X.stroke();}
+      // Poster de Finn rasgado
+      X.fillStyle='#1a2a4a';X.fillRect(o+320,o+90,80,100);
+      X.strokeStyle='#3a4a6a';X.lineWidth=2;X.strokeRect(o+320,o+90,80,100);
+      X.strokeStyle='#f00';X.lineWidth=2;X.beginPath();X.moveTo(o+330,o+90);X.lineTo(o+390,o+190);X.stroke();
+      // Ventana rota
+      X.fillStyle='#030010';X.fillRect(o+450,o+100,70,80);
+      X.strokeStyle='#2a2a3a';X.lineWidth=2;X.strokeRect(o+450,o+100,70,80);
+      X.strokeStyle='#3a3a4a';X.beginPath();X.moveTo(o+450,o+140);X.lineTo(o+520,o+140);X.stroke();
+      X.beginPath();X.moveTo(o+485,o+100);X.lineTo(o+485,o+180);X.stroke();
+      // Grietas
+      X.strokeStyle='rgba(60,0,80,0.3)';X.lineWidth=1;
+      X.beginPath();X.moveTo(o+350,o+250);X.bezierCurveTo(o+360,o+300,o+340,o+350,o+355,o+400);X.stroke();
+      break;
+    case 5: // Rincón Oeste (puerta izquierda de oficina)
+      X.fillStyle='#030208';X.fillRect(o,o,w,h);
+      // Paredes convergentes
+      X.fillStyle='#0a0615';
+      X.beginPath();X.moveTo(o+150,o);X.lineTo(o+636,o);X.lineTo(o+550,o+h);X.lineTo(o+236,o+h);X.closePath();X.fill();
+      // Puerta de la oficina visible
+      X.fillStyle='#1a0a1a';X.fillRect(o+320,o+120,150,350);
+      X.strokeStyle='#4a2a5a';X.lineWidth=4;X.strokeRect(o+320,o+120,150,350);
+      // Pomo
+      X.fillStyle='#888';X.beginPath();X.arc(o+450,o+300,6,0,Math.PI*2);X.fill();
+      // Cartel "OFICINA"
+      X.fillStyle='#1a1a20';X.fillRect(o+350,o+90,90,25);
+      X.fillStyle='#aaa';X.font='bold 11px Segoe UI';X.textAlign='center';X.fillText('OFICINA',o+395,o+107);
+      // Suelo
+      X.fillStyle='#050310';X.fillRect(o+236,o+420,314,136);
+      // Sombras largas
+      X.fillStyle='rgba(0,0,0,0.4)';
+      X.beginPath();X.moveTo(o+320,o+470);X.lineTo(o+280,o+h);X.lineTo(o+520,o+h);X.lineTo(o+470,o+470);X.closePath();X.fill();
+      // Luz parpadeante
+      if(Math.sin(gameT*4)>0.7){X.fillStyle='rgba(255,200,100,0.02)';X.beginPath();X.arc(o+395,o+80,100,0,Math.PI*2);X.fill();}
+      break;
+    case 6: // Rincón Este (puerta derecha de oficina)
+      X.fillStyle='#030208';X.fillRect(o,o,w,h);
+      X.fillStyle='#0a0615';
+      X.beginPath();X.moveTo(o+150,o);X.lineTo(o+636,o);X.lineTo(o+550,o+h);X.lineTo(o+236,o+h);X.closePath();X.fill();
+      // Puerta
+      X.fillStyle='#1a0a1a';X.fillRect(o+320,o+120,150,350);
+      X.strokeStyle='#4a2a5a';X.lineWidth=4;X.strokeRect(o+320,o+120,150,350);
+      X.fillStyle='#888';X.beginPath();X.arc(o+340,o+300,6,0,Math.PI*2);X.fill();
+      X.fillStyle='#1a1a20';X.fillRect(o+350,o+90,90,25);
+      X.fillStyle='#aaa';X.font='bold 11px Segoe UI';X.textAlign='center';X.fillText('OFICINA',o+395,o+107);
+      X.fillStyle='#050310';X.fillRect(o+236,o+420,314,136);
+      // Ventana con luna
+      X.fillStyle='#020015';X.fillRect(o+450,o+60,100,80);
+      X.strokeStyle='#2a2a3a';X.lineWidth=2;X.strokeRect(o+450,o+60,100,80);
+      X.fillStyle='#1a0a30';X.beginPath();X.arc(o+510,o+85,12,0,Math.PI*2);X.fill();
       // Sombras
-      X.fillStyle='rgba(0,0,0,0.3)';X.fillRect(o+200,o+400,386,106);
+      X.fillStyle='rgba(0,0,0,0.4)';
+      X.beginPath();X.moveTo(o+320,o+470);X.lineTo(o+280,o+h);X.lineTo(o+520,o+h);X.lineTo(o+470,o+470);X.closePath();X.fill();
+      if(Math.sin(gameT*3+1)>0.8){X.fillStyle='rgba(255,200,100,0.02)';X.beginPath();X.arc(o+395,o+80,100,0,Math.PI*2);X.fill();}
       break;
   }
   X.restore();
