@@ -279,7 +279,7 @@ function dChicle(c){
   
   // Cara con piel de chicle
   var fg=c.createRadialGradient(0,-10,3,0,-10,16);
-  fg.addColorStop(0,'#ffddee');fg.addColorStop(0.5,'#ffccdd');fg.addColorStop(1,'#eebb cc');
+  fg.addColorStop(0,'#ffddee');fg.addColorStop(0.5,'#ffccdd');fg.addColorStop(1,'#eebbcc');
   c.fillStyle=fg;c.beginPath();c.arc(0,-10,15,0,Math.PI*2);c.fill();
   // Derretimiento facial
   c.fillStyle='rgba(200,50,120,0.15)';

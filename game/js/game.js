@@ -823,7 +823,6 @@ function rCamRoom(idx){
       X.strokeStyle='rgba(20,10,30,0.4)';X.lineWidth=1;
       for(var i=0;i<12;i++)X.strokeRect(o+i*66,o+480,65,76);
       break;
-      break;
   }
   X.restore();
 }
